@@ -1,5 +1,6 @@
 package com.weebkun;
 
+import com.weebkun.commands.Hungry;
 import com.weebkun.events.ExampleListener;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
@@ -17,6 +18,7 @@ public class Application {
         JDA jda = JDABuilder.createDefault(BOT_TOKEN).build();
 
         jda.addEventListener(new ExampleListener());
+        jda.addEventListener(new Hungry());
 
     }
 }
