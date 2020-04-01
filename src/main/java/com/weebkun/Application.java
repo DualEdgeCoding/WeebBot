@@ -1,6 +1,7 @@
 package com.weebkun;
 
 import com.weebkun.commands.Hungry;
+import com.weebkun.commands.Wuhan;
 import com.weebkun.events.ExampleListener;
 import com.weebkun.events.UserJoined;
 import net.dv8tion.jda.api.JDA;
@@ -21,6 +22,7 @@ public class Application {
         //listeners for commands
         jda.addEventListener(new ExampleListener());
         jda.addEventListener(new Hungry());
+        jda.addEventListener(new Wuhan());
 
         //listeners for events
         jda.addEventListener(new UserJoined());
