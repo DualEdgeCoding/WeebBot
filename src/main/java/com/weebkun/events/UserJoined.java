@@ -10,6 +10,8 @@ import java.util.Random;
  * listener for GuildJoinEvent.
  * sends welcome message to user that just joined.
  * @author weebkun
+ * @version 1.1
+ * @since 1.0
  */
 public class UserJoined extends ListenerAdapter {
 

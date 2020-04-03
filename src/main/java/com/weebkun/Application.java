@@ -3,13 +3,15 @@ package com.weebkun;
 import com.weebkun.commands.Hungry;
 import com.weebkun.commands.Wuhan;
 import com.weebkun.events.ExampleListener;
+import com.weebkun.events.Im;
 import com.weebkun.events.UserJoined;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 
 /**
  * @author Weebkun
- * @version 1.0
+ * @version 1.1
+ * @since 1.0
  */
 public class Application {
 
@@ -26,6 +28,7 @@ public class Application {
 
         //listeners for events
         jda.addEventListener(new UserJoined());
+        jda.addEventListener(new Im());
 
     }
 }

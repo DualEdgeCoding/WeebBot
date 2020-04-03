@@ -6,6 +6,11 @@ import net.dv8tion.jda.api.events.GenericEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.EventListener;
 
+/**
+ * @author weebkun
+ * @version 1.1
+ * @since 1.0
+ */
 public class ExampleListener implements EventListener {
 
     /**

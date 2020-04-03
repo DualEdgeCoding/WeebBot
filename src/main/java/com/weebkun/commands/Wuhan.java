@@ -7,6 +7,8 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 /**
  * Event listener for Coronavirus command.
  * @author weebkun
+ * @version 1.1
+ * @since 1.0
  */
 public class Wuhan extends ListenerAdapter {
 
