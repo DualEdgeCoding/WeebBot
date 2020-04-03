@@ -25,6 +25,9 @@ import com.weebkun.events.Im;
 import com.weebkun.events.UserJoined;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
+import net.dv8tion.jda.api.requests.GatewayIntent;
+import net.dv8tion.jda.api.utils.MemberCachePolicy;
+import net.dv8tion.jda.api.utils.cache.CacheFlag;
 
 /**
  * @author Weebkun
@@ -37,7 +40,7 @@ public class Application {
 
     public static void main(String[] args) throws Exception {
 
-        JDA jda = JDABuilder.createDefault(BOT_TOKEN).build();
+        JDA jda = JDABuilder.create(BOT_TOKEN, GatewayIntent.GUILD_MEMBERS, GatewayIntent.GUILD_PRESENCES, GatewayIntent.GUILD_MESSAGES).disableCache(CacheFlag.VOICE_STATE, CacheFlag.EMOTE).setMemberCachePolicy(MemberCachePolicy.ALL).build();
 
         //listeners for commands
         jda.addEventListener(new ExampleListener());

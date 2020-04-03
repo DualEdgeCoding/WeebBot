@@ -16,14 +16,17 @@ limitations under the License.
 
 package com.weebkun.commands;
 
-import com.weebkun.Util.Exceptions.NullEntityException;
 import com.weebkun.Util.Exceptions.NullMemberException;
 import com.weebkun.Util.Exceptions.NullRoleException;
+import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
+import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+
+import java.util.List;
 
 /**
  * event listener class for adding role command.
@@ -35,7 +38,7 @@ public class AddRole extends ListenerAdapter {
 
     // syntax: !addrole [role] [member]
     // expect: 2 arguments role and member.
-    // member arg is username and tag of target member, it is of format username#xxxx
+    // member arg is nickname of user
     // if role name contains spaces, separate with dashes.
 
     /**
@@ -49,7 +52,15 @@ public class AddRole extends ListenerAdapter {
         Guild guild = e.getGuild();
         try {
             if (!e.getAuthor().isBot() && msg[0].equalsIgnoreCase("!addrole")) {
-                Member member = guild.getMemberByTag(msg[2]);
+                // TODO clean up this mess
+                Member member = null;
+                List<Member> members = guild.getMembers();
+                for(Member mem : members){
+                    if(mem.getEffectiveName().equalsIgnoreCase(msg[2])){
+                        member = mem;
+                    }
+                }
+
                 if(member == null) throw new NullMemberException();
                 // search for role with name provided by looping through each role in guild.
                 for (Role r : guild.getRoles()) {
