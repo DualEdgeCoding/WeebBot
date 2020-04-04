@@ -18,11 +18,9 @@ package com.weebkun.commands;
 
 import com.weebkun.Util.Exceptions.NullMemberException;
 import com.weebkun.Util.Exceptions.NullRoleException;
-import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
-import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
@@ -52,30 +50,28 @@ public class AddRole extends ListenerAdapter {
         Guild guild = e.getGuild();
         try {
             if (!e.getAuthor().isBot() && msg[0].equalsIgnoreCase("!addrole")) {
-                // TODO clean up this mess
-                Member member = null;
-                List<Member> members = guild.getMembers();
-                for(Member mem : members){
-                    if(mem.getEffectiveName().equalsIgnoreCase(msg[2])){
-                        member = mem;
-                    }
-                }
+                //get member object with provided tag
+                Member member = guild.getMemberByTag(msg[2]);
 
-                if(member == null) throw new NullMemberException();
+                //check if obj is null. if so, throw NullMemberException.
+                if(member == null) {
+                    e.getMessage().getChannel().sendMessage("❌ Sorry. Couldn't find the Member specified. Please make sure the casing is correct.").queue();
+                    throw new NullMemberException();
+                }
                 // search for role with name provided by looping through each role in guild.
                 for (Role r : guild.getRoles()) {
                     if (r.getName().equalsIgnoreCase(msg[1].replace("-", " "))) {
                         guild.addRoleToMember(member, r).queue();
-                        e.getMessage().getChannel().sendMessage(String.format("%s now has Role %s.✔", member.getNickname(), r.getName())).queue();
+                        e.getMessage().getChannel().sendMessage("☑" + String.format("%s now has Role %s.", member.getEffectiveName(), r.getName())).queue();
                         return;
                     }
                 }
                 e.getMessage().getChannel().sendMessage("❌ Sorry. Couldn't find the role specified. Remember to replace the spaces in the role with hyphens. Syntax:`!addrole [role] [member]`").queue();
+                throw new NullRoleException();
             }
         } catch (IllegalArgumentException | NullRoleException | NullMemberException exp) {
-            System.out.println("Addrole command encountered wrong argument.");
+            System.out.println("[AddRole] invalid argument.");
             System.out.println(exp);
-            e.getMessage().getChannel().sendMessage("❌ An Internal Exception was caught:\n" + exp).queue();
         }
     }
 }

@@ -23,7 +23,7 @@ package com.weebkun.Util.Exceptions;
 public class NullRoleException extends NullEntityException {
 
     public NullRoleException(){
-        super("[NullRoleException] net.dv8tion.jda.api.entities.Role expected, but found null");
+        super("[NullRoleException] Could not find role.");
         this.entity = "net.dv8tion.jda.api.entities.Role";
     }
 }

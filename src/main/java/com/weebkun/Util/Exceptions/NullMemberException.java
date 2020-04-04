@@ -23,7 +23,7 @@ package com.weebkun.Util.Exceptions;
 public class NullMemberException extends NullEntityException{
 
     public NullMemberException(){
-        super("[NullMemberException] net.dv8tion.jda.api.entities.Member expected, but found null");
+        super("[NullMemberException] Could not find Member.");
         this.entity = "net.dv8tion.jda.api.entities.Member";
     }
 }

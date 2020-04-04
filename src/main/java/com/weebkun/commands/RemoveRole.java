@@ -24,21 +24,24 @@ public class RemoveRole extends ListenerAdapter {
         try {
             if (!e.getAuthor().isBot() && msg[0].equalsIgnoreCase("!removerole")) {
                 Member member = guild.getMemberByTag(msg[2]);
-                if(member == null) throw new NullMemberException();
+                if(member == null) {
+                    e.getMessage().getChannel().sendMessage("❌ Sorry. Couldn't find the Member specified. Please make sure the casing is correct.").queue();
+                    throw new NullMemberException();
+                }
                 // check if member currently has role specified.
                 for (Role r : member.getRoles()) {
                     if(r.getName().equalsIgnoreCase(msg[1].replace("-", " "))) {
                         guild.removeRoleFromMember(member, r).queue();
-                        e.getMessage().getChannel().sendMessage(String.format("Role %s has been successfully removed from %s.✔", r.getName(), member.getNickname())).queue();
+                        e.getMessage().getChannel().sendMessage("☑" + String.format("Role %s has been successfully removed from %s.", r.getName(), member.getEffectiveName())).queue();
                         return;
                     }
                 }
                 e.getMessage().getChannel().sendMessage("❌ Sorry, the member specified does not have the role.").queue();
+                throw new NullRoleException();
             }
         } catch (IllegalArgumentException | NullRoleException | NullMemberException exp) {
-            System.out.println("Addrole command encountered wrong argument.");
+            System.out.println("[RemoveRole] invalid argument.");
             System.out.println(exp);
-            e.getMessage().getChannel().sendMessage("❌ An Internal Exception was caught:\n" + exp).queue();
         }
     }
 
