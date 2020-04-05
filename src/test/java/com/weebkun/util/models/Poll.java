@@ -22,6 +22,7 @@ import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.TextChannel;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -39,7 +40,7 @@ public class Poll {
     private JDA jda;
     private Guild guild;
     private TextChannel channel;
-    private List<Vote> votes;
+    private List<Vote> votes = new ArrayList<>();
     private UUID id;
 
     /**

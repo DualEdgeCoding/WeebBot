@@ -47,9 +47,11 @@ public class PollCommand extends ListenerAdapter {
             PollHandler handler = Application.getHandler(e.getGuild());
             if(handler != null){
                 handler.startPoll(poll);
+                System.out.println("started poll.");
             } else{
                 handler = new PollHandler(e.getGuild());
                 handler.startPoll(poll);
+                System.out.println("handler not found.");
             }
         }
     }

@@ -16,7 +16,9 @@ limitations under the License.
 
 package com.weebkun;
 
+import com.weebkun.commands.EndPoll;
 import com.weebkun.commands.PollCommand;
+import com.weebkun.commands.VoteCommand;
 import com.weebkun.util.handlers.PollHandler;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
@@ -43,10 +45,10 @@ public class Application {
         JDA jda = JDABuilder.create(BOT_TOKEN, GatewayIntent.GUILD_MEMBERS, GatewayIntent.GUILD_PRESENCES, GatewayIntent.GUILD_MESSAGES, GatewayIntent.DIRECT_MESSAGES, GatewayIntent.GUILD_MESSAGE_REACTIONS).disableCache(CacheFlag.VOICE_STATE, CacheFlag.EMOTE).setMemberCachePolicy(MemberCachePolicy.ALL).build();
 
         jda.addEventListener(new PollCommand());
+        jda.addEventListener(new VoteCommand());
+        jda.addEventListener(new EndPoll());
+        jda.addEventListener(new GuildReady());
 
-        for(Guild g : jda.getGuilds()){
-            pollHandlers.add(new PollHandler(g));
-        }
     }
 
     /**
@@ -56,7 +58,7 @@ public class Application {
      */
     public static PollHandler getHandler(@Nonnull Guild guild){
         for(PollHandler p : pollHandlers){
-            if(p.getGuild() == guild) {
+            if(p.getGuild().equals(guild)) {
                 return p;
             }
         }

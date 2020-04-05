@@ -29,7 +29,7 @@ public class VoteCommand extends ListenerAdapter {
     public void onGuildMessageReceived(GuildMessageReceivedEvent e) {
 
         String[] msg = e.getMessage().getContentRaw().split(" ");
-        if(msg.length < 2) {
+        if(msg.length < 2 && !e.getAuthor().isBot()) {
             e.getMessage().getChannel().sendMessage("❌ Please specify the choice you want to vote.").queue();
             return;
         }
