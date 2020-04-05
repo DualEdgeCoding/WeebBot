@@ -14,16 +14,9 @@ See the License for the specific language governing permissions and
 limitations under the License.
  */
 
-package com.weebkun.Util.Exceptions;
+package com.weebkun.util;
 
-/**
- * Unchecked exception class for when null is returned instead of Role entity.
- * @author weebkun
- */
-public class NullRoleException extends NullEntityException {
-
-    public NullRoleException(){
-        super("[NullRoleException] Could not find role.");
-        this.entity = "net.dv8tion.jda.api.entities.Role";
-    }
+public enum PollStatus {
+    ACTIVE,
+    ENDED
 }

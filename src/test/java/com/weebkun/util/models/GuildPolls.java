@@ -14,16 +14,22 @@ See the License for the specific language governing permissions and
 limitations under the License.
  */
 
-package com.weebkun.Util.Exceptions;
+package com.weebkun.util.models;
+
+import com.weebkun.util.models.Poll;
+import net.dv8tion.jda.api.entities.Guild;
+
+import java.util.List;
 
 /**
- * Unchecked exception class for when null is returned instead of Member entity.
- * @author weebkun
+ * Class just for keeping instances of guild and poll in same object.
  */
-public class NullMemberException extends NullEntityException{
+public class GuildPolls {
+    Guild guild;
+    List<Poll> polls;
 
-    public NullMemberException(){
-        super("[NullMemberException] Could not find Member.");
-        this.entity = "net.dv8tion.jda.api.entities.Member";
+    public GuildPolls(Guild guild, List<Poll> polls){
+        this.guild = guild;
+        this.polls = polls;
     }
 }
