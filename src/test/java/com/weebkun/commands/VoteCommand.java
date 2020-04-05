@@ -41,7 +41,7 @@ public class VoteCommand extends ListenerAdapter {
                     //add vote to poll
                     p.vote(e.getMember(), msg[1]);
                     //send confirmation msg
-                    e.getMessage().getChannel().sendMessage(String.format("☑ %s successfully voted for: %s", e.getAuthor().getName(), msg[1])).queue();
+                    e.getMessage().getChannel().sendMessage(String.format("☑ %s voted for: %s", e.getAuthor().getName(), msg[1])).queue();
                 }
             }
         }
