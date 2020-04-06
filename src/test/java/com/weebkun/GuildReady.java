@@ -8,6 +8,6 @@ public class GuildReady extends ListenerAdapter {
 
     public void onGuildReady(GuildReadyEvent e) {
         Application.pollHandlers.add(new PollHandler(e.getGuild()));
-        System.out.printf("added pollhandler for %s\n", e.getGuild().getName());
+        Application.getLogger().info(String.format("Added PollHandler for %s", e.getGuild().getName()));
     }
 }

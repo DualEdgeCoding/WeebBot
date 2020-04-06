@@ -26,6 +26,8 @@ import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.MemberCachePolicy;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
@@ -35,6 +37,8 @@ import java.util.List;
  * @author Weebkun
  */
 public class Application {
+
+    private static Logger logger = LoggerFactory.getLogger(Application.class);
 
     static List<PollHandler> pollHandlers = new ArrayList<>();
 
@@ -63,5 +67,9 @@ public class Application {
             }
         }
         return null;
+    }
+
+    public static Logger getLogger(){
+        return logger;
     }
 }

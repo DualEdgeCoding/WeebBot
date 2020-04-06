@@ -16,6 +16,7 @@ limitations under the License.
 
 package com.weebkun.util.handlers;
 
+import com.weebkun.Application;
 import com.weebkun.util.models.Poll;
 import com.weebkun.util.PollStatus;
 import net.dv8tion.jda.api.entities.Guild;
@@ -42,11 +43,13 @@ public class PollHandler {
     public void startPoll(Poll poll){
         polls.add(poll);
         poll.status = PollStatus.ACTIVE;
+        Application.getLogger().info("Started Poll {}: {}", poll.getId().toString(), poll.getQuestion());
     }
 
     public void endPoll(Poll poll) {
         polls.remove(poll);
         poll.status = PollStatus.ENDED;
+        Application.getLogger().info("Ended Poll {}: {}", poll.getId().toString(), poll.getQuestion());
         // todo count and return votes.
     }
 
