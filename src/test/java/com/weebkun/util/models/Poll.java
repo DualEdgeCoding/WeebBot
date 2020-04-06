@@ -28,6 +28,7 @@ import java.util.UUID;
 
 /**
  * Poll class for creating strawpolls.
+ * Keeps a reference to the instance of the Guild and TextChannel it is in.
  * @author weebkun
  */
 public class Poll {
@@ -99,8 +100,13 @@ public class Poll {
         return id;
     }
 
+    public List<Vote> getVotes() {
+        return votes;
+    }
+
     public void vote(Member voter, String choice){
         if(this.status == PollStatus.ENDED){
+            channel.sendMessage("❌ Sorry the poll has already ended.").queue();
             return;
         }
         for(String ch : this.choices){

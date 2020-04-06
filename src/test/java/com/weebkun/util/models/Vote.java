@@ -20,17 +20,19 @@ import net.dv8tion.jda.api.entities.Member;
 
 /**
  * Class that represents a vote.
+ * Stores the Member instance of the voter and the choice he/she made.
+ * @author weebkun
  */
 public class Vote {
 
     /**
      * Member instance of voter.
      */
-    Member voter;
+    public Member voter;
     /**
      * choice of voter.
      */
-    String choice;
+    public String choice;
 
     public Vote(Member voter, String choice){
         this.voter = voter;

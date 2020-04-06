@@ -17,12 +17,21 @@ limitations under the License.
 package com.weebkun.util.handlers;
 
 import com.weebkun.Application;
+import com.weebkun.util.VoteCounter;
 import com.weebkun.util.models.Poll;
 import com.weebkun.util.PollStatus;
+import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Guild;
 
 import java.util.*;
 
+/**
+ * Handler that keeps track of Polls for each server/guild, hence each guild will be attached to a unique Handler.
+ * @see Poll
+ * <br>
+ * Each PollHandler instance keeps a reference to the Guild that it is attached to.
+ * @author weebkun
+ */
 public class PollHandler {
 
     private Guild guild;
@@ -40,17 +49,32 @@ public class PollHandler {
         return polls;
     }
 
+    /**
+     * Method used to start a poll.
+     * @param poll - Poll object that will be started.
+     */
     public void startPoll(Poll poll){
         polls.add(poll);
         poll.status = PollStatus.ACTIVE;
         Application.getLogger().info("Started Poll {}: {}", poll.getId().toString(), poll.getQuestion());
     }
 
+    /**
+     * Method used to end a poll.
+     * @param poll - Poll obj that will be ended.
+     */
     public void endPoll(Poll poll) {
         polls.remove(poll);
         poll.status = PollStatus.ENDED;
         Application.getLogger().info("Ended Poll {}: {}", poll.getId().toString(), poll.getQuestion());
-        // todo count and return votes.
+        // count and return votes.
+        Map<String, Integer> total = VoteCounter.count(poll.getVotes(), poll.getChoices());
+
+        EmbedBuilder builder = new EmbedBuilder();
+        builder.setAuthor(poll.getAuthor().getEffectiveName()).setTitle("results for poll:").setDescription("'" + poll.getQuestion() + "'").setColor(0xcc55d3);
+        total.forEach((choice, count) -> builder.addField(choice, count.toString() + (count == 1 ? " vote" : " votes"), false));
+        poll.getChannel().sendMessage(builder.build()).queue();
+
     }
 
     /**

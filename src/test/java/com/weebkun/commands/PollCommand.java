@@ -31,26 +31,31 @@ public class PollCommand extends ListenerAdapter {
     public void onGuildMessageReceived(GuildMessageReceivedEvent e) {
         String[] msg = e.getMessage().getContentRaw().split(" ");
         if(!e.getAuthor().isBot() && msg[0].equalsIgnoreCase("!poll")) {
-            String[] choices = msg[2].split(",");
-            if(choices.length < 2) e.getMessage().getChannel().sendMessage("❌ Error. must have at least 2 choices.").queue();
-            Poll poll = new Poll(String.join(" ", msg[1].split("-")), choices, e.getJDA(), e.getGuild(), e.getChannel(), e.getMember());
+            if (msg.length == 3) {
+                String[] choices = msg[2].split(",");
+                if (choices.length < 2)
+                    e.getMessage().getChannel().sendMessage("❌ Error. must have at least 2 choices.").queue();
+                Poll poll = new Poll(String.join(" ", msg[1].split("-")), choices, e.getJDA(), e.getGuild(), e.getChannel(), e.getMember());
 
-            //build embed
-            EmbedBuilder builder = new EmbedBuilder();
-            String embedChoices = String.join("\n", poll.getChoices());
-            builder.setTitle(poll.getQuestion()).setDescription("Please vote with `!vote [choice]`\nID: " + poll.getId().toString()).setColor(0xeeee11).addField("Choices:", embedChoices, true).setAuthor(poll.getAuthor().getEffectiveName());
+                //build embed
+                EmbedBuilder builder = new EmbedBuilder();
+                String embedChoices = String.join("\n", poll.getChoices());
+                builder.setTitle(poll.getQuestion()).setDescription("Please vote with `!vote [choice]`\nID: " + poll.getId().toString()).setColor(0xeeee11).addField("Choices:", embedChoices, true).setAuthor(poll.getAuthor().getEffectiveName());
 
-            //send poll as message
-            e.getMessage().getChannel().sendMessage(builder.build()).queue();
+                //send poll as message
+                e.getMessage().getChannel().sendMessage(builder.build()).queue();
 
-            //register poll to poll handler
-            PollHandler handler = Application.getHandler(e.getGuild());
-            if(handler != null){
-                handler.startPoll(poll);
-            } else{
-                handler = new PollHandler(e.getGuild());
-                handler.startPoll(poll);
-                Application.getLogger().error("Handler not found.");
+                //register poll to poll handler
+                PollHandler handler = Application.getHandler(e.getGuild());
+                if (handler != null) {
+                    handler.startPoll(poll);
+                } else {
+                    handler = new PollHandler(e.getGuild());
+                    handler.startPoll(poll);
+                    Application.getLogger().error("Handler not found.");
+                }
+            } else {
+                e.getMessage().getChannel().sendMessage("❌ Sorry. invalid syntax for !poll. correct synax: `!poll [question] [choices]`").queue();
             }
         }
     }

@@ -22,6 +22,8 @@ import com.weebkun.util.models.Poll;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
+import java.util.Arrays;
+
 public class VoteCommand extends ListenerAdapter {
 
     //!vote [choice]
@@ -29,20 +31,22 @@ public class VoteCommand extends ListenerAdapter {
     public void onGuildMessageReceived(GuildMessageReceivedEvent e) {
 
         String[] msg = e.getMessage().getContentRaw().split(" ");
-        if(msg.length < 2 && !e.getAuthor().isBot()) {
-            e.getMessage().getChannel().sendMessage("❌ Please specify the choice you want to vote.").queue();
-            return;
-        }
         if(!e.getAuthor().isBot() && msg[0].equalsIgnoreCase("!vote")) {
-            //get this guild's pollhandler
-            PollHandler handler = Application.getHandler(e.getGuild());
-            for(Poll p : handler.getPolls()){
-                if(p.getChannel() == e.getMessage().getChannel()){
-                    //add vote to poll
-                    p.vote(e.getMember(), msg[1]);
-                    //send confirmation msg
-                    e.getMessage().getChannel().sendMessage(String.format("☑ %s voted for: %s", e.getAuthor().getName(), msg[1])).queue();
+            if(msg.length == 2) {
+                //get this guild's pollhandler
+                PollHandler handler = Application.getHandler(e.getGuild());
+                for (Poll p : handler.getPolls()) {
+                    if (p.getChannel() == e.getMessage().getChannel() && Arrays.stream(p.getChoices()).anyMatch(msg[1]::equals)) {
+                        //add vote to poll
+                        p.vote(e.getMember(), msg[1]);
+                        //send confirmation msg
+                        e.getMessage().getChannel().sendMessage(String.format("☑ %s voted for: %s", e.getAuthor().getName(), msg[1])).queue();
+                    } else{
+                        e.getMessage().getChannel().sendMessage(String.format("❌ Sorry, the poll '%s' does not have the choice '%s'", p.getQuestion(), msg[1])).queue();
+                    }
                 }
+            } else{
+                e.getMessage().getChannel().sendMessage("❌ Sorry, the correct syntax should be !vote [choice]").queue();
             }
         }
     }
