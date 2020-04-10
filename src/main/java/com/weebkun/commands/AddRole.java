@@ -16,15 +16,13 @@ limitations under the License.
 
 package com.weebkun.commands;
 
-import com.weebkun.Util.Exceptions.NullMemberException;
-import com.weebkun.Util.Exceptions.NullRoleException;
+import com.weebkun.util.Exceptions.NullMemberException;
+import com.weebkun.util.Exceptions.NullRoleException;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
-
-import java.util.List;
 
 /**
  * event listener class for adding role command.

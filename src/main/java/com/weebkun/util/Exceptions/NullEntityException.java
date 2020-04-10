@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
  */
 
-package com.weebkun.Util.Exceptions;
+package com.weebkun.util.Exceptions;
 
 /**
  * Base class for exceptions thrown when getters return null when an entity is expected.
