@@ -16,18 +16,24 @@ limitations under the License.
 
 package com.weebkun;
 
-import com.weebkun.commands.AddRole;
-import com.weebkun.commands.Hungry;
-import com.weebkun.commands.RemoveRole;
-import com.weebkun.commands.Wuhan;
+import com.weebkun.commands.*;
 import com.weebkun.events.ExampleListener;
+import com.weebkun.events.GuildReady;
 import com.weebkun.events.Im;
 import com.weebkun.events.UserJoined;
+import com.weebkun.util.handlers.PollHandler;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
+import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.MemberCachePolicy;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.annotation.Nonnull;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Weebkun
@@ -35,6 +41,10 @@ import net.dv8tion.jda.api.utils.cache.CacheFlag;
  * @since 1.0
  */
 public class Application {
+
+    private static Logger logger = LoggerFactory.getLogger(Application.class);
+
+    private static List<PollHandler> pollHandlers = new ArrayList<>();
 
     private static final String BOT_TOKEN = System.getenv("bot_token");
 
@@ -48,10 +58,36 @@ public class Application {
         jda.addEventListener(new Wuhan());
         jda.addEventListener(new AddRole());
         jda.addEventListener(new RemoveRole());
+        jda.addEventListener(new PollCommand());
+        jda.addEventListener(new VoteCommand());
+        jda.addEventListener(new EndPoll());
 
         //listeners for events
         jda.addEventListener(new UserJoined());
         jda.addEventListener(new Im());
+        jda.addEventListener(new GuildReady());
 
+}
+
+    /**
+     * Used to get the PollHandler of a guild. Pass in the target Guild instance to get the PollHandler of that guild.
+     * @param guild - Provided to get the PollHandler of said guild.
+     * @return Possibly null PollHandler of guild specified
+     */
+    public static PollHandler getHandler(@Nonnull Guild guild){
+        for(PollHandler p : pollHandlers){
+            if(p.getGuild().equals(guild)) {
+                return p;
+            }
+        }
+        return null;
+    }
+
+    public static Logger getLogger(){
+        return logger;
+    }
+
+    public static List<PollHandler> getPollHandlers() {
+        return pollHandlers;
     }
 }
